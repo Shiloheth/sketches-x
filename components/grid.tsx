@@ -1,8 +1,7 @@
 "use client";
+import { useMemo, useState } from "react";
 
 export default function Grid() {
-  const posts = [];
-
   const images = [
     "https://dr.savee-cdn.com/things/thumbnails/6/4/642cf54328b4a345b42419.webp",
     "https://dr.savee-cdn.com/things/thumbnails/6/4/696b847a5f4e900846edc2.webp",
@@ -15,52 +14,48 @@ export default function Grid() {
     "https://dr.savee-cdn.com/things/thumbnails/6/4/696a04efc9a6b70b2baa73.webp",
   ];
 
-  let imageIndex = 0;
+  // Using a useMemo hook so this function runs once
+  const posts: any = useMemo(() => {
+    let imageIndex = 0;
+    const generatedPosts = [];
 
-  for (let i = 1; i <= 80; i++) {
-    let item = {
-      id: i,
-      title: `Post ${i}`,
-      date: `${i < 10 ? 0 : ""}${i}/10/2021 `,
-      image: images[imageIndex],
-    };
-    posts.push(item);
-    imageIndex++;
-    if (imageIndex > images.length - 1) imageIndex = 0;
-  }
+    for (let i = 1; i <= 80; i++) {
+      const item = {
+        id: i,
+        title: `Post ${i}`,
+        date: `${i < 10 ? 0 : ""}${i}/10/2021 `,
+        image: images[imageIndex],
+      };
+      generatedPosts.push(item);
+      imageIndex++;
+      if (imageIndex > images.length - 1) imageIndex = 0;
+    }
 
-  console.log(posts);
+    return generatedPosts;
+  }, []);
+
+  const totalIterations = posts.length / 20;
+  console.log(totalIterations);
+
+  let columns = Array.from({ length: totalIterations });
+  console.log(columns);
 
   return (
     <div className="flex gap-10 w-full px-10">
-      <div className="flex flex-1 flex-col gap-10">
-        {posts.map((post, idx) => (
-          <div key={idx}>
-            <img src={`${post.image}`} />
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-1 flex-col gap-10">
-        {posts.map((post, idx) => (
-          <div key={idx}>
-            <img src={`${post.image}`} />
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-1 flex-col gap-10">
-        {posts.map((post, idx) => (
-          <div key={idx}>
-            <img src={`${post.image}`} />
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-1 flex-col gap-10">
-        {posts.map((post, idx) => (
-          <div key={idx}>
-            <img src={`${post.image}`} />
-          </div>
-        ))}
-      </div>
+      {columns.map((column, idx) => (
+        <div key={idx} className="flex flex-1 flex-col gap-10">
+          <p>hi</p>
+          {posts
+            .slice(idx * 20, (idx + 1) * 20)
+            .map((post: any, imageIndex: any) => (
+              <img
+                key={imageIndex}
+                src={post.image}
+                alt={`Image ${imageIndex}`}
+              />
+            ))}
+        </div>
+      ))}
     </div>
   );
 }
