@@ -35,16 +35,13 @@ export default function Grid() {
   }, []);
 
   const totalIterations = posts.length / 20;
-  console.log(totalIterations);
 
   let columns = Array.from({ length: totalIterations });
-  console.log(columns);
 
   return (
     <div className="flex gap-10 w-full px-10">
       {columns.map((column, idx) => (
         <div key={idx} className="flex flex-1 flex-col gap-10">
-          <p>hi</p>
           {posts
             .slice(idx * 20, (idx + 1) * 20)
             .map((post: any, imageIndex: any) => (
